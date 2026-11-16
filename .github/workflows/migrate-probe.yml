@@ -30,6 +30,18 @@ jobs:
             shared_preferences uuid intl crypto flutter_secure_storage
           flutter pub add --dev sqflite_common_ffi
           echo "=== PUBSPEC ==="; cat pubspec.yaml
+      - name: Dump package APIs
+        run: |
+          FLN=$(ls -d $HOME/.pub-cache/hosted/pub.dev/flutter_local_notifications-23*)
+          echo "=== FLN README (android setup) ==="; sed -n '1,400p' $FLN/README.md | grep -n -i -E 'desugar|coreLibrary|receiver|SCHEDULE_EXACT|POST_NOTIFICATIONS|BOOT_COMPLETED|exact|initialize|zonedSchedule|ScheduledNotificationReceiver|permission' | head -80
+          echo "=== FLN CHANGELOG ==="; sed -n '1,140p' $FLN/CHANGELOG.md
+          echo "=== zonedSchedule sig ==="; grep -rn -A22 'Future<void> zonedSchedule' $FLN/lib/src/*.dart | head -60
+          echo "=== initialize sig ==="; grep -rn -B2 -A18 'Future<bool?> initialize' $FLN/lib/src/*.dart | head -60
+          echo "=== android impl perms ==="; grep -n -E 'Future<.*> (requestNotificationsPermission|requestExactAlarmsPermission|canScheduleExactNotifications|areNotificationsEnabled)' $FLN/lib/src/platform_specifics/android/*.dart $FLN/lib/src/*.dart | head
+          echo "=== FLN example manifest ==="; cat $FLN/example/android/app/src/main/AndroidManifest.xml | head -80
+          echo "=== FLN example gradle ==="; cat $FLN/example/android/app/build.gradle* | head -70
+          FTZ=$(ls -d $HOME/.pub-cache/hosted/pub.dev/flutter_timezone-5*); echo "=== flutter_timezone ==="; cat $FTZ/README.md | head -60
+          SB=$(ls -d $HOME/.pub-cache/hosted/pub.dev/supabase_flutter-2*); echo "=== supabase_flutter ==="; grep -n -A25 'static Future<Supabase> initialize' $SB/lib/src/supabase.dart | head -50
       - name: Show generated android files
         run: |
           echo "=== TREE ==="; find android -type f -not -path '*/res/*' | sort
