@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'features/home/home_screen.dart';
 import 'state/app_state.dart';
 
@@ -38,10 +39,14 @@ class AzmApp extends ConsumerWidget {
       useMaterial3: true,
       brightness: brightness,
       colorScheme: scheme,
-      scaffoldBackgroundColor: dark ? const Color(0xFF0D1825) : const Color(0xFFF4F7F8),
+      scaffoldBackgroundColor: dark
+          ? const Color(0xFF0D1825)
+          : const Color(0xFFF4F7F8),
       fontFamily: 'Roboto',
       appBarTheme: AppBarTheme(
-        backgroundColor: dark ? const Color(0xFF0D1825) : const Color(0xFFF4F7F8),
+        backgroundColor: dark
+            ? const Color(0xFF0D1825)
+            : const Color(0xFFF4F7F8),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
       ),
@@ -54,7 +59,10 @@ class AzmApp extends ConsumerWidget {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: dark ? const Color(0xFF223449) : const Color(0xFFF5F7F8),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide.none,
+        ),
       ),
     );
   }

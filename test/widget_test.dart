@@ -9,7 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Azm dashboard renders with the local habit repository', (tester) async {
+  testWidgets('Azm dashboard renders with the local habit repository', (
+    tester,
+  ) async {
     await initializeDateFormatting('ar');
     SharedPreferences.setMockInitialValues({});
     final repository = HabitRepository();
