@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 import '../../models/habit.dart';
 import '../../state/app_state.dart';
 
@@ -88,11 +87,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     await ref.read(habitRepositoryProvider).saveSession(null);
     ticker?.cancel();
     setState(() { sessionHabitId = null; sessionStarted = null; pausedSeconds = 0; elapsed = 0; });
-    if (mounted) showDialog(context: context, builder: (_) => AlertDialog(
-      title: const Text('أحسنت! إنجاز جديد 🎉'),
-      content: Text('أكملت ${habit.name}. استمر في بناء عزمك.'),
-      actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('رائع'))],
-    ));
+    if (mounted) {
+      showDialog<void>(context: context, builder: (_) => AlertDialog(
+        title: const Text('أحسنت! إنجاز جديد 🎉'),
+        content: Text('أكملت ${habit.name}. استمر في بناء عزمك.'),
+        actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('رائع'))],
+      ));
+    }
   }
 
   String _clock(int seconds) {
@@ -106,7 +107,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final habits = ref.watch(habitsProvider).where((h) => !h.isPaused).toList();
-    final done = ref.watch(completedProvider);
     final completed = ref.read(habitRepositoryProvider).completedToday;
     final count = habits.where((h) => completed.contains(h.id)).length;
     final progress = habits.isEmpty ? 0.0 : count / habits.length;
@@ -149,7 +149,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       padding: const EdgeInsets.all(20),
       child: Row(children: [
         SizedBox(width: 88, height: 88, child: Stack(alignment: Alignment.center, children: [
-          SizedBox.expand(child: CircularProgressIndicator(value: progress, strokeWidth: 8, backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(.10), strokeCap: StrokeCap.round)),
+          SizedBox.expand(child: CircularProgressIndicator(value: progress, strokeWidth: 8, backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: .10), strokeCap: StrokeCap.round)),
           Text('${(progress*100).round()}%', style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
         ])),
         const SizedBox(width: 18),
@@ -169,7 +169,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       padding: const EdgeInsets.all(15),
       child: Column(children: [
         Row(children: [
-          Container(width: 44, height: 44, decoration: BoxDecoration(color: Theme.of(context).colorScheme.secondary.withOpacity(.12), borderRadius: BorderRadius.circular(14)), child: Icon(_iconFor(habit.name), color: Theme.of(context).colorScheme.secondary)),
+          Container(width: 44, height: 44, decoration: BoxDecoration(color: Theme.of(context).colorScheme.secondary.withValues(alpha: .12), borderRadius: BorderRadius.circular(14)), child: Icon(_iconFor(habit.name), color: Theme.of(context).colorScheme.secondary)),
           const SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(habit.name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
