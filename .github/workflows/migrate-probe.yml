@@ -30,24 +30,23 @@ jobs:
             shared_preferences uuid intl crypto flutter_secure_storage
           flutter pub add --dev sqflite_common_ffi
           echo "=== PUBSPEC ==="; cat pubspec.yaml
-      - name: Dump package APIs
+      - name: Dump package APIs 2
         run: |
-          FLN=$(ls -d $HOME/.pub-cache/hosted/pub.dev/flutter_local_notifications-23*)
-          echo "=== FLN README (android setup) ==="; sed -n '1,400p' $FLN/README.md | grep -n -i -E 'desugar|coreLibrary|receiver|SCHEDULE_EXACT|POST_NOTIFICATIONS|BOOT_COMPLETED|exact|initialize|zonedSchedule|ScheduledNotificationReceiver|permission' | head -80
-          echo "=== FLN CHANGELOG ==="; sed -n '1,140p' $FLN/CHANGELOG.md
-          echo "=== zonedSchedule sig ==="; grep -rn -A22 'Future<void> zonedSchedule' $FLN/lib/src/*.dart | head -60
-          echo "=== initialize sig ==="; grep -rn -B2 -A18 'Future<bool?> initialize' $FLN/lib/src/*.dart | head -60
-          echo "=== android impl perms ==="; grep -n -E 'Future<.*> (requestNotificationsPermission|requestExactAlarmsPermission|canScheduleExactNotifications|areNotificationsEnabled)' $FLN/lib/src/platform_specifics/android/*.dart $FLN/lib/src/*.dart | head
-          echo "=== FLN example manifest ==="; cat $FLN/example/android/app/src/main/AndroidManifest.xml | head -80
-          echo "=== FLN example gradle ==="; cat $FLN/example/android/app/build.gradle* | head -70
-          FTZ=$(ls -d $HOME/.pub-cache/hosted/pub.dev/flutter_timezone-5*); echo "=== flutter_timezone ==="; cat $FTZ/README.md | head -60
-          SB=$(ls -d $HOME/.pub-cache/hosted/pub.dev/supabase_flutter-2*); echo "=== supabase_flutter ==="; grep -n -A25 'static Future<Supabase> initialize' $SB/lib/src/supabase.dart | head -50
+          MU=$(ls -d $HOME/.pub-cache/hosted/pub.dev/material_ui-1*)
+          echo "=== material_ui lib ==="; ls $MU/lib | head -30
+          echo "=== material_ui exports ==="; cat $MU/lib/material_ui.dart | grep -v '^//' | head -40
+          echo "=== localization symbols ==="; grep -rn -E 'class GlobalMaterialLocalizations|delegates =>|static const LocalizationsDelegate' $MU/lib | head -20
+          echo "=== README ==="; grep -n -i -B2 -A10 -E 'locali' $MU/README.md | head -60
+          echo "=== app.dart localization defaults ==="; grep -rn -E 'localizationsDelegates|_MaterialLocalizationsDelegate|DefaultMaterialLocalizations' $MU/lib/src/*/app.dart 2>/dev/null | head -20; grep -rln 'class MaterialApp' $MU/lib | head
+          FTZ=$(ls -d $HOME/.pub-cache/hosted/pub.dev/flutter_timezone-5*)
+          echo "=== flutter_timezone API ==="; ls $FTZ/lib; grep -rn -E 'static|Future<' $FTZ/lib/flutter_timezone.dart | head -20; grep -rn -E 'class TimezoneInfo' -A12 $FTZ/lib | head -25
       - name: Show generated android files
         run: |
           echo "=== TREE ==="; find android -type f -not -path '*/res/*' | sort
           for f in android/app/build.gradle* android/build.gradle* android/settings.gradle* android/gradle/wrapper/gradle-wrapper.properties android/app/src/main/AndroidManifest.xml; do echo "=== $f ==="; cat "$f"; done
           find android -name 'MainActivity*' -exec sh -c 'echo "=== $1 ==="; cat "$1"' _ {} \;
       - name: Publish generated android folder to probe branch
+        if: false
         run: |
           git config user.name ci && git config user.email ci@example.com
           git add android pubspec.lock pubspec.yaml
