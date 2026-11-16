@@ -3,10 +3,14 @@ name: Build Android APK
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main, 'claude/**' ]
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -27,11 +31,24 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Generate Android platform files
-        run: flutter create --platforms=android --org com.azm .
+      - name: Flutter version
+        run: flutter --version
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Format
+        run: dart format lib test
+
+      - name: Commit formatting (work branches only)
+        if: github.ref != 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions"
+            git config user.email "actions@users.noreply.github.com"
+            git commit -am "style: dart format"
+            git push origin HEAD:${{ github.ref_name }} || true
+          fi
 
       - name: Analyze
         run: flutter analyze
@@ -42,13 +59,25 @@ jobs:
       - name: Build release APK
         run: flutter build apk --release
 
-      - name: Rename APK
-        run: cp build/app/outputs/flutter-apk/app-release.apk azm-release.apk
+      - name: Verify APK
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk azm-release.apk
+          ls -l azm-release.apk
+          test -s azm-release.apk
 
-      - name: Upload APK
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: azm-release-apk
           path: azm-release.apk
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 30
+
+      - name: Publish GitHub Release (main only)
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="latest"
+          gh release delete "$TAG" --yes --cleanup-tag || true
+          gh release create "$TAG" azm-release.apk --title "Azm latest build" --notes "Automated build from ${GITHUB_SHA}" --target "${GITHUB_SHA}"
