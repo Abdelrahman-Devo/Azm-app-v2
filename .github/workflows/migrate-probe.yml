@@ -5,20 +5,39 @@ on:
   push:
     branches: [ 'claude/probe-**' ]
 
+permissions:
+  contents: write
+
 jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
       - run: flutter --version
-      - run: flutter create --platforms=android --org com.azm .
-      - run: git add -A && git -c user.name=ci -c user.email=ci@example.com commit -qm base
-      - run: flutter pub get
-      - run: dart fix --apply --code=migrate_design_widgets || true
-      - name: Show migration diff
-        run: git diff -- lib test pubspec.yaml pubspec.lock | head -400
-      - run: cat pubspec.yaml
+      - run: flutter create --platforms=android --org com.azm --project-name azm .
+      - name: Resolve candidate packages
+        run: |
+          flutter pub add material_ui flutter_riverpod sqflite path path_provider supabase_flutter \
+            flutter_local_notifications timezone flutter_timezone image_picker fl_chart \
+            shared_preferences uuid intl crypto flutter_secure_storage
+          flutter pub add --dev sqflite_common_ffi
+          echo "=== PUBSPEC ==="; cat pubspec.yaml
+      - name: Show generated android files
+        run: |
+          echo "=== TREE ==="; find android -type f -not -path '*/res/*' | sort
+          for f in android/app/build.gradle* android/build.gradle* android/settings.gradle* android/gradle/wrapper/gradle-wrapper.properties android/app/src/main/AndroidManifest.xml; do echo "=== $f ==="; cat "$f"; done
+          find android -name 'MainActivity*' -exec sh -c 'echo "=== $1 ==="; cat "$1"' _ {} \;
+      - name: Publish generated android folder to probe branch
+        run: |
+          git config user.name ci && git config user.email ci@example.com
+          git add android pubspec.lock pubspec.yaml
+          git commit -qm "probe: generated android + resolved pubspec" || true
+          git push origin HEAD:claude/probe-generated -f
