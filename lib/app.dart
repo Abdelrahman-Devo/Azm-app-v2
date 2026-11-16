@@ -45,7 +45,7 @@ class AzmApp extends ConsumerWidget {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: dark ? const Color(0xFF172536) : Colors.white,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
