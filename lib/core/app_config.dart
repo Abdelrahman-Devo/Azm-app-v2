@@ -8,6 +8,6 @@ class AppConfig {
     'SUPABASE_ANON_KEY',
   );
 
-  static bool get supabaseConfigured =>
-      supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty;
+  static const bool supabaseConfigured =
+      supabaseUrl != '' && supabaseAnonKey != '';
 }
