@@ -66,6 +66,12 @@ void main() {
     );
     await tester.tap(find.text('إضافة العادة'));
     await tester.pump();
+    // The name field is at the top of the list; scroll back to it.
+    await tester.scrollUntilVisible(
+      find.text('أدخل اسم العادة'),
+      -300,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.text('أدخل اسم العادة'), findsOneWidget);
   });
 }
