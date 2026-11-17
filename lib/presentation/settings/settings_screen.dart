@@ -13,8 +13,7 @@ class SettingsScreen extends ConsumerWidget {
     final ok = await showAzmConfirm(
       context,
       title: 'حذف كل البيانات؟',
-      message:
-          'ستُحذف جميع العادات والإنجازات والمؤقت من هذا الجهاز نهائيًا. لا يمكن التراجع.',
+      message: 'ستُحذف جميع العادات والإنجازات والمؤقت من هذا الجهاز نهائيًا. لا يمكن التراجع.',
       confirmLabel: 'حذف الكل',
       destructive: true,
       icon: Icons.delete_forever_rounded,
@@ -90,7 +89,9 @@ class SettingsScreen extends ConsumerWidget {
             child: ListTile(
               leading: const Icon(Icons.notifications_active_rounded),
               title: const Text('السماح بالإشعارات'),
-              subtitle: const Text('لتصلك تذكيرات العادات وتنبيه انتهاء المؤقت'),
+              subtitle: const Text(
+                'لتصلك تذكيرات العادات وتنبيه انتهاء المؤقت',
+              ),
               onTap: () async {
                 final granted = await ref
                     .read(notificationServiceProvider)
@@ -131,9 +132,8 @@ class SettingsScreen extends ConsumerWidget {
                           ? 'لمزامنة بياناتك سحابيًا'
                           : 'الخدمة السحابية غير مفعّلة في هذا الإصدار',
                     ),
-                    onTap: () => Navigator.of(
-                      context,
-                    ).push(azmRoute(const AuthScreen(fromSettings: true))),
+                    onTap: () => Navigator.of(context)
+                        .push(azmRoute(const AuthScreen(fromSettings: true))),
                   ),
           ),
           const SizedBox(height: 18),
@@ -154,9 +154,8 @@ class SettingsScreen extends ConsumerWidget {
           Center(
             child: Text(
               'Azm - عزم · الإصدار 1.0.0',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: scheme.onSurfaceVariant,
-              ),
+              style: Theme.of(context).textTheme.bodySmall
+                  ?.copyWith(color: scheme.onSurfaceVariant),
             ),
           ),
         ],

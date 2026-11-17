@@ -25,11 +25,7 @@ StreakResult computeStreaks({
   }
   var run = 0;
   var best = 0;
-  for (
-    var d = first;
-    !d.isAfter(todayDay);
-    d = addDays(d, 1)
-  ) {
+  for (var d = first; !d.isAfter(todayDay); d = addDays(d, 1)) {
     if (!habit.isScheduledOn(d)) continue;
     if (doneKeys.contains(dateKey(d))) {
       run++;
@@ -118,7 +114,8 @@ int perfectDayCount(List<Habit> habits, List<Completion> completions) {
           !dayOnly(h.createdAt).isAfter(day) &&
           h.isScheduledOn(day),
     );
-    if (scheduled.isNotEmpty && scheduled.every((h) => doneIds.contains(h.id))) {
+    if (scheduled.isNotEmpty &&
+        scheduled.every((h) => doneIds.contains(h.id))) {
       count++;
     }
   });

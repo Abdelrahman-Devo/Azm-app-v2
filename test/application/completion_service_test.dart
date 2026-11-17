@@ -117,29 +117,29 @@ void main() {
     await container.read(timerProvider.notifier).setProof('/proof.jpg');
     final result = await container.read(completionServiceProvider).complete(h);
     expect(result, isA<CompleteSuccess>());
-    expect(
-      (result as CompleteSuccess).completion.proofPath,
-      '/proof.jpg',
-    );
+    expect((result as CompleteSuccess).completion.proofPath, '/proof.jpg');
   });
 
-  test('timer survives an app restart (new container, same database)', () async {
-    final h = habit();
-    await container.read(habitsProvider.notifier).save(h);
-    await container.read(timerProvider.notifier).start(h);
-    final startedAt = now;
+  test(
+    'timer survives an app restart (new container, same database)',
+    () async {
+      final h = habit();
+      await container.read(habitsProvider.notifier).save(h);
+      await container.read(timerProvider.notifier).start(h);
+      final startedAt = now;
 
-    // "Kill" the app and reopen it 12 minutes later.
-    now = startedAt.add(const Duration(minutes: 12));
-    final reopened = await makeContainer();
-    final session = reopened.read(timerProvider).value;
-    expect(session, isNotNull);
-    expect(session!.isRunning, isTrue);
-    expect(session.isComplete(now.millisecondsSinceEpoch), isTrue);
+      // "Kill" the app and reopen it 12 minutes later.
+      now = startedAt.add(const Duration(minutes: 12));
+      final reopened = await makeContainer();
+      final session = reopened.read(timerProvider).value;
+      expect(session, isNotNull);
+      expect(session!.isRunning, isTrue);
+      expect(session.isComplete(now.millisecondsSinceEpoch), isTrue);
 
-    final result = await reopened.read(completionServiceProvider).complete(h);
-    expect(result, isA<CompleteSuccess>());
-  });
+      final result = await reopened.read(completionServiceProvider).complete(h);
+      expect(result, isA<CompleteSuccess>());
+    },
+  );
 
   test('paused timer restores with its accumulated time', () async {
     final h = habit();
@@ -156,26 +156,26 @@ void main() {
     expect(session.elapsedMs(now.millisecondsSinceEpoch), 4 * 60 * 1000);
   });
 
-  test('only one session at a time; reset discards it without a record', () async {
-    final h = habit();
-    final other = habit().copyWith(name: 'x');
-    final timer = container.read(timerProvider.notifier);
-    await container.read(habitsProvider.notifier).save(h);
-    expect(await timer.start(h), StartResult.started);
-    expect(await timer.start(h), StartResult.alreadyActive);
-    expect(
-      await timer.start(Habit(
-        id: 'h2',
-        name: other.name,
-        createdAt: now,
-        updatedAt: now,
-      )),
-      StartResult.otherActive,
-    );
-    await timer.reset();
-    expect(container.read(timerProvider).value, isNull);
-    expect(container.read(completionsProvider).value, isEmpty);
-  });
+  test(
+    'only one session at a time; reset discards it without a record',
+    () async {
+      final h = habit();
+      final other = habit().copyWith(name: 'x');
+      final timer = container.read(timerProvider.notifier);
+      await container.read(habitsProvider.notifier).save(h);
+      expect(await timer.start(h), StartResult.started);
+      expect(await timer.start(h), StartResult.alreadyActive);
+      expect(
+        await timer.start(
+          Habit(id: 'h2', name: other.name, createdAt: now, updatedAt: now),
+        ),
+        StartResult.otherActive,
+      );
+      await timer.reset();
+      expect(container.read(timerProvider).value, isNull);
+      expect(container.read(completionsProvider).value, isEmpty);
+    },
+  );
 
   test('deleting a habit removes its running session', () async {
     final h = habit();

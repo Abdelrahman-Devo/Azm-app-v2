@@ -15,7 +15,10 @@ Future<Widget> _app(Widget home) async {
   final prefs = await SharedPreferences.getInstance();
   final db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
   await db.close();
-  final appDb = await AppDatabase.open(databaseFactoryFfi, inMemoryDatabasePath);
+  final appDb = await AppDatabase.open(
+    databaseFactoryFfi,
+    inMemoryDatabasePath,
+  );
   addTearDown(appDb.close);
   return ProviderScope(
     overrides: [
@@ -42,7 +45,9 @@ void main() {
     await tester.runAsync(() async {});
     final app = await tester.runAsync(() => _app(const DashboardScreen()));
     await tester.pumpWidget(app!);
-    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 200)),
+    );
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('ابدأ رحلتك'), findsOneWidget);
     expect(find.text('أضف أول عادة'), findsOneWidget);

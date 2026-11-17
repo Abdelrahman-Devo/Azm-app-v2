@@ -76,10 +76,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
           return;
         }
       } else {
-        await auth.signIn(
-          email: _email.text.trim(),
-          password: _password.text,
-        );
+        await auth.signIn(email: _email.text.trim(), password: _password.text);
       }
       if (!mounted) return;
       _finish();
@@ -239,9 +236,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                 ? () => Navigator.of(context).pop()
                                 : _skip),
                       child: Text(
-                        widget.fromSettings
-                            ? 'إغلاق'
-                            : 'المتابعة بدون حساب',
+                        widget.fromSettings ? 'إغلاق' : 'المتابعة بدون حساب',
                       ),
                     ),
                   ],

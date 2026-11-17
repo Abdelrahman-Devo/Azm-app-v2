@@ -46,9 +46,9 @@ class HabitsScreen extends ConsumerWidget {
                 habit: habit,
                 doneToday: o.doneToday.contains(habit.id),
                 streak: o.streaks[habit.id]?.current ?? 0,
-                onTap: () => Navigator.of(
-                  context,
-                ).push(azmRoute(HabitDetailScreen(habitId: habit.id))),
+                onTap: () =>
+                    Navigator.of(context)
+                        .push(azmRoute(HabitDetailScreen(habitId: habit.id))),
               );
             },
           );

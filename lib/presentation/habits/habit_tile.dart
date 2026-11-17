@@ -94,10 +94,7 @@ class HabitTile extends StatelessWidget {
             if (doneToday)
               Icon(Icons.check_circle_rounded, color: scheme.secondary)
             else if (trailing == null)
-              Icon(
-                Icons.chevron_left_rounded,
-                color: scheme.onSurfaceVariant,
-              ),
+              Icon(Icons.chevron_left_rounded, color: scheme.onSurfaceVariant),
             ?trailing,
           ],
         ),

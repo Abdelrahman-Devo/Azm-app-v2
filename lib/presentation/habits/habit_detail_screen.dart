@@ -211,9 +211,8 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
             onSelected: (v) async {
               switch (v) {
                 case 'edit':
-                  await Navigator.of(
-                    context,
-                  ).push(azmRoute(HabitEditorScreen(existing: habit)));
+                  await Navigator.of(context)
+                      .push(azmRoute(HabitEditorScreen(existing: habit)));
                 case 'pause':
                   await ref
                       .read(habitsProvider.notifier)
@@ -281,7 +280,8 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
             otherActive: otherActive,
             busy: _busy,
             onStart: _start,
-            onPause: () => _guard(() => ref.read(timerProvider.notifier).pause()),
+            onPause: () =>
+                _guard(() => ref.read(timerProvider.notifier).pause()),
             onResume: () => _guard(
               () => ref.read(timerProvider.notifier).resume(habit.name),
             ),
@@ -446,9 +446,8 @@ class _TimerCard extends ConsumerWidget {
             Expanded(
               child: Text(
                 'أنجزت هذه العادة اليوم. أحسنت!',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+                style: Theme.of(context).textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.w800),
               ),
             ),
           ],
@@ -477,11 +476,10 @@ class _TimerCard extends ConsumerWidget {
                   children: [
                     Text(
                       formatClock(seconds),
-                      style: Theme.of(context).textTheme.displaySmall
-                          ?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            fontFeatures: const [FontFeature.tabularFigures()],
-                          ),
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
                     ),
                     Text(
                       s == null
@@ -613,14 +611,15 @@ class _ProofCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  required ? 'صورة الإثبات (مطلوبة)' : 'صورة الإثبات (اختيارية)',
+                  required
+                      ? 'صورة الإثبات (مطلوبة)'
+                      : 'صورة الإثبات (اختيارية)',
                   style: const TextStyle(fontWeight: FontWeight.w800),
                 ),
                 Text(
                   hasFile ? 'تم حفظ الصورة' : 'لم تُرفق صورة بعد',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: scheme.onSurfaceVariant,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall
+                      ?.copyWith(color: scheme.onSurfaceVariant),
                 ),
               ],
             ),

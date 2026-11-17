@@ -120,9 +120,10 @@ class CompletionService {
       today: now,
     );
     final earnedBefore = earnedBadges(ctxBefore).map((b) => b.id).toSet();
-    final newBadges = earnedBadges(
-      ctxAfter,
-    ).where((b) => !earnedBefore.contains(b.id)).map((b) => b.title).toList();
+    final newBadges = earnedBadges(ctxAfter)
+        .where((b) => !earnedBefore.contains(b.id))
+        .map((b) => b.title)
+        .toList();
     final leveledUp = ctxAfter.level > ctxBefore.level ? ctxAfter.level : null;
 
     await _ref.read(timerProvider.notifier).clearFinished();

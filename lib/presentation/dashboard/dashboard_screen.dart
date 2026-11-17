@@ -61,12 +61,11 @@ class _Content extends ConsumerWidget {
           EmptyState(
             icon: Icons.flag_rounded,
             title: 'ابدأ رحلتك',
-            message:
-                'أضف عادتك الأولى، وحدد مدتها وأيامها، وسنتابع التزامك يومًا بيوم.',
+            message: 'أضف عادتك الأولى، وحدد مدتها وأيامها، وسنتابع التزامك يومًا بيوم.',
             action: FilledButton.icon(
-              onPressed: () => Navigator.of(
-                context,
-              ).push(azmRoute(const HabitEditorScreen())),
+              onPressed: () =>
+                  Navigator.of(context)
+                      .push(azmRoute(const HabitEditorScreen())),
               icon: const Icon(Icons.add_rounded),
               label: const Text('أضف أول عادة'),
             ),
@@ -97,9 +96,8 @@ class _Content extends ConsumerWidget {
                 size: 96,
                 child: Text(
                   '${(o.todayProgress * 100).round()}%',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+                  style: Theme.of(context).textTheme.titleLarge
+                      ?.copyWith(fontWeight: FontWeight.w800),
                 ),
               ),
               const SizedBox(width: 18),
@@ -109,18 +107,16 @@ class _Content extends ConsumerWidget {
                   children: [
                     Text(
                       'إنجازك اليوم',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w800),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       o.todayTotal == 0
                           ? 'لا توجد عادات مجدولة اليوم'
                           : 'أكملت ${o.todayDone} من ${o.todayTotal} عادات',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: scheme.onSurfaceVariant,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: scheme.onSurfaceVariant),
                     ),
                   ],
                 ),
@@ -215,9 +211,8 @@ class _Content extends ConsumerWidget {
           AzmCard(
             child: Text(
               'لا توجد عادات مجدولة لهذا اليوم. استمتع بيوم هادئ، أو أضف عادة جديدة.',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(height: 1.6),
+              style: Theme.of(context).textTheme.bodyMedium
+                  ?.copyWith(height: 1.6),
             ),
           )
         else
@@ -228,9 +223,9 @@ class _Content extends ConsumerWidget {
                 habit: habit,
                 doneToday: o.doneToday.contains(habit.id),
                 streak: o.streaks[habit.id]?.current ?? 0,
-                onTap: () => Navigator.of(
-                  context,
-                ).push(azmRoute(HabitDetailScreen(habitId: habit.id))),
+                onTap: () =>
+                    Navigator.of(context)
+                        .push(azmRoute(HabitDetailScreen(habitId: habit.id))),
               ),
             ),
         const SizedBox(height: 12),
@@ -275,9 +270,8 @@ class _Header extends ConsumerWidget {
             children: [
               Text(
                 greeting,
-                style: Theme.of(
-                  context,
-                ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
+                style: Theme.of(context).textTheme.headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 2),
               Text(
@@ -317,9 +311,9 @@ class _ActiveTimerBanner extends ConsumerWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: AzmCard(
         color: color.withValues(alpha: 0.14),
-        onTap: () => Navigator.of(
-          context,
-        ).push(azmRoute(HabitDetailScreen(habitId: habit.id))),
+        onTap: () =>
+            Navigator.of(context)
+                .push(azmRoute(HabitDetailScreen(habitId: habit.id))),
         child: SecondTicker(
           builder: (context) {
             final nowMs = ref.read(clockProvider)().millisecondsSinceEpoch;

@@ -46,7 +46,8 @@ class Overview {
   final List<BadgeDef> earned;
 
   int get todayTotal => todayHabits.length;
-  int get todayDone => todayHabits.where((h) => doneToday.contains(h.id)).length;
+  int get todayDone =>
+      todayHabits.where((h) => doneToday.contains(h.id)).length;
   double get todayProgress => todayTotal == 0 ? 0 : todayDone / todayTotal;
 
   int get bestCurrentStreak {

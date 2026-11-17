@@ -178,9 +178,17 @@ void main() {
 
       final comps = [
         for (var d = 10; d <= 16; d++)
-          completion('h', DateTime(2026, 11, d), proof: d == 16 ? '/p.jpg' : null),
+          completion(
+            'h',
+            DateTime(2026, 11, d),
+            proof: d == 16 ? '/p.jpg' : null,
+          ),
       ];
-      final ctx = buildBadgeContext(habits: [h], completions: comps, today: today);
+      final ctx = buildBadgeContext(
+        habits: [h],
+        completions: comps,
+        today: today,
+      );
       final ids = earnedBadges(ctx).map((b) => b.id).toSet();
       expect(ids, containsAll(['first', 'streak7', 'proof']));
       expect(ids, isNot(contains('ten')));

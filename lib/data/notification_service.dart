@@ -149,7 +149,8 @@ class LocalNotificationService implements NotificationService {
       await _plugin.zonedSchedule(
         id: reminderId(habit.id, weekday),
         title: 'حان وقت ${habit.name}',
-        body: 'مدتها ${habit.durationMinutes} دقيقة. ابدأ الآن وحافظ على سلسلتك.',
+        body:
+            'مدتها ${habit.durationMinutes} دقيقة. ابدأ الآن وحافظ على سلسلتك.',
         scheduledDate: _nextOccurrence(weekday, minutes),
         notificationDetails: const NotificationDetails(
           android: _reminderChannel,
@@ -192,9 +193,8 @@ class LocalNotificationService implements NotificationService {
       id: _timerEndId,
       title: 'انتهى وقت $habitName',
       body: 'أحسنت! افتح التطبيق لتأكيد إنجازك.',
-      scheduledDate: tz.TZDateTime.now(
-        tz.local,
-      ).add(Duration(seconds: remainingSeconds)),
+      scheduledDate: tz.TZDateTime.now(tz.local)
+          .add(Duration(seconds: remainingSeconds)),
       notificationDetails: const NotificationDetails(android: _timerChannel),
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
     );

@@ -215,19 +215,15 @@ class _RateCard extends StatelessWidget {
             strokeWidth: 7,
             child: Text(
               '${stats.percent}%',
-              style: const TextStyle(
-                fontWeight: FontWeight.w800,
-                fontSize: 14,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
             ),
           ),
           const SizedBox(height: 10),
           Text(label, style: const TextStyle(fontWeight: FontWeight.w800)),
           Text(
             '${stats.done}/${stats.scheduled}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: scheme.onSurfaceVariant,
-            ),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: scheme.onSurfaceVariant),
           ),
         ],
       ),

@@ -34,8 +34,7 @@ class CompletionRepository {
       final existing = await txn.query(
         'completions',
         columns: ['id'],
-        where:
-            'deleted_at IS NULL AND ((habit_id = ? AND date_key = ?) OR session_id = ?)',
+        where: 'deleted_at IS NULL AND ((habit_id = ? AND date_key = ?) OR session_id = ?)',
         whereArgs: [c.habitId, c.dateKey, c.sessionId],
         limit: 1,
       );

@@ -23,14 +23,13 @@ class FriendsScreen extends ConsumerWidget {
     } else if (!auth.isSignedIn) {
       message = 'سجّل الدخول لتتمكن لاحقًا من إضافة الأصدقاء ومشاركة التحديات.';
       action = FilledButton(
-        onPressed: () => Navigator.of(
-          context,
-        ).push(azmRoute(const AuthScreen(fromSettings: true))),
+        onPressed: () =>
+            Navigator.of(context)
+                .push(azmRoute(const AuthScreen(fromSettings: true))),
         child: const Text('تسجيل الدخول'),
       );
     } else {
-      message =
-          'حسابك مفعّل، لكن شاشات الأصدقاء والتحديات ولوحة الترتيب لم تُنفَّذ بعد في هذا الإصدار.';
+      message = 'حسابك مفعّل، لكن شاشات الأصدقاء والتحديات ولوحة الترتيب لم تُنفَّذ بعد في هذا الإصدار.';
     }
 
     return Scaffold(

@@ -49,7 +49,9 @@ class ProfileScreen extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
     final overview = ref.watch(overviewProvider).value;
     final auth = ref.watch(authServiceProvider);
-    final name = settings.displayName.isEmpty ? 'مستخدم عزم' : settings.displayName;
+    final name = settings.displayName.isEmpty
+        ? 'مستخدم عزم'
+        : settings.displayName;
     final earnedIds = overview?.earned.map((b) => b.id).toSet() ?? <String>{};
     final level = overview?.level;
 
@@ -79,9 +81,8 @@ class ProfileScreen extends ConsumerWidget {
                   children: [
                     Text(
                       name,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: Theme.of(context).textTheme.titleLarge
+                          ?.copyWith(fontWeight: FontWeight.w800),
                     ),
                     IconButton(
                       tooltip: 'تعديل الاسم',
@@ -94,9 +95,8 @@ class ProfileScreen extends ConsumerWidget {
                   auth.isSignedIn
                       ? (auth.currentUser?.email ?? 'حساب سحابي')
                       : 'حساب محلي على هذا الجهاز',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: scheme.onSurfaceVariant,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall
+                      ?.copyWith(color: scheme.onSurfaceVariant),
                 ),
                 if (level != null) ...[
                   const SizedBox(height: 18),
@@ -131,9 +131,8 @@ class ProfileScreen extends ConsumerWidget {
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
                       'يتبقى ${level.xpForNext - level.xpIntoLevel} XP للمستوى التالي',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: scheme.onSurfaceVariant,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall
+                          ?.copyWith(color: scheme.onSurfaceVariant),
                     ),
                   ),
                 ],
@@ -199,9 +198,8 @@ class _BadgeTile extends StatelessWidget {
                   ),
                   Text(
                     badge.description,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: scheme.onSurfaceVariant,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall
+                        ?.copyWith(color: scheme.onSurfaceVariant),
                   ),
                 ],
               ),
