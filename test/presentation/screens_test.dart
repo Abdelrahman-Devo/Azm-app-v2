@@ -59,7 +59,11 @@ void main() {
     final app = await tester.runAsync(() => _app(const HabitEditorScreen()));
     await tester.pumpWidget(app!);
     await tester.pump();
-    await tester.ensureVisible(find.text('إضافة العادة'));
+    await tester.scrollUntilVisible(
+      find.text('إضافة العادة'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tester.tap(find.text('إضافة العادة'));
     await tester.pump();
     expect(find.text('أدخل اسم العادة'), findsOneWidget);
