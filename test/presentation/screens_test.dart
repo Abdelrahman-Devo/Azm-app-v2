@@ -56,22 +56,16 @@ void main() {
   });
 
   testWidgets('habit editor validates the name before saving', (tester) async {
+    // A tall viewport so the whole form is built and no scrolling is needed.
+    tester.view.physicalSize = const Size(800, 4000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
     final app = await tester.runAsync(() => _app(const HabitEditorScreen()));
     await tester.pumpWidget(app!);
     await tester.pump();
-    await tester.scrollUntilVisible(
-      find.text('إضافة العادة'),
-      300,
-      scrollable: find.byType(Scrollable).first,
-    );
     await tester.tap(find.text('إضافة العادة'));
     await tester.pump();
-    // The name field is at the top of the list; scroll back to it.
-    await tester.scrollUntilVisible(
-      find.text('أدخل اسم العادة'),
-      -300,
-      scrollable: find.byType(Scrollable).first,
-    );
     expect(find.text('أدخل اسم العادة'), findsOneWidget);
   });
 }
