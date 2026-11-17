@@ -34,6 +34,15 @@ jobs:
       - name: Flutter version
         run: flutter --version
 
+      - name: Download Tajawal font
+        run: |
+          mkdir -p assets/fonts
+          for w in Regular Medium Bold ExtraBold; do
+            curl -fsSL -o "assets/fonts/Tajawal-$w.ttf" \
+              "https://raw.githubusercontent.com/google/fonts/main/ofl/tajawal/Tajawal-$w.ttf"
+          done
+          ls -l assets/fonts
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -57,7 +66,12 @@ jobs:
         run: flutter test
 
       - name: Build release APK
-        run: flutter build apk --release
+        run: |
+          ARGS=""
+          if [ -n "${{ secrets.SUPABASE_URL }}" ] && [ -n "${{ secrets.SUPABASE_ANON_KEY }}" ]; then
+            ARGS="--dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}"
+          fi
+          flutter build apk --release $ARGS
 
       - name: Verify APK
         run: |
